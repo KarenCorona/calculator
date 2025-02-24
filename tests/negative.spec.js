@@ -66,7 +66,7 @@ afterEach(async function () {
 
     // Lógica de aserción
     const result = await driver.findElement(By.id("result")).getText();
-    assert.strictEqual(result, "-998", "El resultado de -1000 + 2 debería ser -998");
+    assert.strictEqual(result, "Result: -998", "El resultado de -1000 + 2 debería ser 'Result: -998'");
 
     // Captura de pantalla
     const filename = "negative";

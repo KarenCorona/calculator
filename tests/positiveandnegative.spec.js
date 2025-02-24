@@ -70,7 +70,7 @@ afterEach(async function () {
 
     // Lógica de aserción
     const result = await driver.findElement(By.id("result")).getText();
-    assert.strictEqual(result, "3", "El resultado de 5 + (-2) debería ser 3");
+    assert.strictEqual(result, "Result: 3", "El resultado de 5 + (-2) debería ser 'Result: 3'");
 
     // Captura de pantalla
     const filename = "positive and negative";

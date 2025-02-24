@@ -51,8 +51,6 @@ afterEach(async function () {
 
             encodedString, 'base64');
 
-
-
         // Close the browser
 
         await driver.quit();
@@ -70,7 +68,7 @@ afterEach(async function () {
 
     // Lógica de aserción
     const result = await driver.findElement(By.id("result")).getText();
-    assert.strictEqual(result, "0", "El resultado de 0 + 0 debería ser 0");
+    assert.strictEqual(result, "Result: 0", "El resultado de 0 + 0 debería ser 'Result: 0'");
 
     // Captura de pantalla
     const filename = "zeros";
