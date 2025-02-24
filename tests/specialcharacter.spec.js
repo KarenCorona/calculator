@@ -62,19 +62,19 @@ afterEach(async function () {
 });
 
   it('special character', async function() {
-    await driver.get("http://127.0.0.1:8000/")
-    await driver.manage().window().setRect({ width: 654, height: 656 })
-    await driver.findElement(By.id("num1")).sendKeys("1 + 1")
-    await driver.findElement(By.id("num2")).click()
-    await driver.findElement(By.id("num2")).sendKeys("2")
-    await driver.findElement(By.css("button:nth-child(1)")).click()
+    await driver.get("http://127.0.0.1:8000/"); // Cambia la URL si es necesario
+    await driver.manage().window().setRect({ width: 654, height: 656 });
+    await driver.findElement(By.id("num1")).sendKeys("1 + 1");
+    await driver.findElement(By.id("num2")).sendKeys("2");
+    await driver.findElement(By.css("button:nth-child(1)")).click();
 
-    const element = await driver.findElement(By.css("body"))
-    const text = await element.getText()
-    assert(text.includes("1 + 1 + 2 = 4"))
+    // Lógica de aserción
+    const result = await driver.findElement(By.id("result")).getText();
+    assert.strictEqual(result, "4", "El resultado de 1 + 1 + 2 debería ser 4");
 
+    // Captura de pantalla
     const filename = "specialcharacter";
     const encodedString = await driver.takeScreenshot();
     await fs.writeFileSync(`./screenshots/${filename}.png`, encodedString, 'base64');
-  })
+  });
 })

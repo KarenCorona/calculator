@@ -62,23 +62,19 @@ afterEach(async function () {
 });
 
   it('positive and negative', async function() {
-    await driver.get("http://127.0.0.1:8000/")
-    await driver.manage().window().setRect({ width: 654, height: 656 })
-    await driver.findElement(By.id("num1")).sendKeys("5")
-    await driver.findElement(By.id("num2")).click()
-    {
-      const element = await driver.findElement(By.css("button:nth-child(1)"))
-      await driver.actions({ bridge: true }).moveToElement(element).perform()
-    }
-    await driver.findElement(By.id("num2")).sendKeys("-2")
-    await driver.findElement(By.css("button:nth-child(1)")).click()
-    {
-      const element = await driver.findElement(By.CSS_SELECTOR, "body")
-      await driver.actions({ bridge: true }).moveToElement(element, 0, 0).perform()
-    }
+    await driver.get("http://127.0.0.1:8000/"); // Cambia la URL si es necesario
+    await driver.manage().window().setRect({ width: 654, height: 656 });
+    await driver.findElement(By.id("num1")).sendKeys("5");
+    await driver.findElement(By.id("num2")).sendKeys("-2");
+    await driver.findElement(By.css("button:nth-child(1)")).click();
 
+    // Lógica de aserción
+    const result = await driver.findElement(By.id("result")).getText();
+    assert.strictEqual(result, "3", "El resultado de 5 + (-2) debería ser 3");
+
+    // Captura de pantalla
     const filename = "positive and negative";
     const encodedString = await driver.takeScreenshot();
     await fs.writeFileSync(`./screenshots/${filename}.png`, encodedString, 'base64');
-  })
+  });
 })

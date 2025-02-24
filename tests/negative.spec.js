@@ -23,10 +23,6 @@ const chrome = require('selenium-webdriver/chrome');
 
     driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
 
-
-
-
-
 vars = {}
 
 })
@@ -62,20 +58,19 @@ afterEach(async function () {
 });
 
   it('negative', async function() {
-    await driver.get("http://127.0.0.1:5500/")
-    await driver.manage().window().setRect({ width: 654, height: 656 })
-    await driver.findElement(By.id("num1")).sendKeys("-1000")
-    await driver.findElement(By.id("num2")).click()
-    await driver.findElement(By.id("num2")).click()
-    {
-      const element = await driver.findElement(By.id("num2"))
-      await driver.actions({ bridge: true}).doubleClick(element).perform()
-    }
-    await driver.findElement(By.id("num2")).sendKeys("2")
-    await driver.findElement(By.css("button:nth-child(1)")).click()
+    await driver.get("http://127.0.0.1:8000/"); // Cambia la URL si es necesario
+    await driver.manage().window().setRect({ width: 654, height: 656 });
+    await driver.findElement(By.id("num1")).sendKeys("-1000");
+    await driver.findElement(By.id("num2")).sendKeys("2");
+    await driver.findElement(By.css("button:nth-child(1)")).click();
 
+    // Lógica de aserción
+    const result = await driver.findElement(By.id("result")).getText();
+    assert.strictEqual(result, "-998", "El resultado de -1000 + 2 debería ser -998");
+
+    // Captura de pantalla
     const filename = "negative";
     const encodedString = await driver.takeScreenshot();
     await fs.writeFileSync(`./screenshots/${filename}.png`, encodedString, 'base64');
-  })
+  });
 })
