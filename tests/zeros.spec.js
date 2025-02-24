@@ -6,13 +6,60 @@ describe('zeros', function() {
   this.timeout(30000)
   let driver
   let vars
-  beforeEach(async function() {
-    driver = await new Builder().forBrowser('chrome').build()
-    vars = {}
-  })
-  afterEach(async function() {
-    await driver.quit();
-  })
+  if (!fs.existsSync('./screenshots')) {
+
+    fs.mkdirSync('./screenshots');
+
+}
+
+beforeEach(async function() {
+
+const chrome = require('selenium-webdriver/chrome');
+
+    const options = new chrome.Options();
+
+    options.addArguments('--headless', '--no-sandbox', '--disable-dev-shm-usage');
+
+    driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
+
+
+
+
+
+vars = {}
+
+})
+
+afterEach(async function () {
+
+    if (driver) {
+
+        // Take a screenshot of the result page
+
+        const filename = this.currentTest.fullTitle()
+
+            .replace(/['"]+/g, '')
+
+            .replace(/[^a-z0-9]/gi, '_')
+
+            .toLowerCase();;
+
+        const encodedString = await driver.takeScreenshot();
+
+        await fs.writeFileSync(`./screenshots/${filename}.png`,
+
+            encodedString, 'base64');
+
+
+
+        // Close the browser
+
+        await driver.quit();
+
+    }
+
+});
+
   it('zeros', async function() {
     await driver.get("http://127.0.0.1:8000/")
     await driver.manage().window().setRect({ width: 654, height: 656 })
@@ -25,5 +72,11 @@ describe('zeros', function() {
     }
     await driver.findElement(By.id("num2")).sendKeys("0")
     await driver.findElement(By.css("button:nth-child(1)")).click()
+
+    assert(await driver.findElement(By.id("result")).getText() == "0")
+
+    const filename = "zeros";
+    const encodedString = await driver.takeScreenshot();
+    await fs.writeFileSync(`./screenshots/${filename}.png`, encodedString, 'base64');
   })
 })
