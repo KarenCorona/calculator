@@ -61,17 +61,17 @@ afterEach(async function () {
 
 });
 
-  it('special character', async function() {
+    it('special character', async function() {
     await driver.get("http://127.0.0.1:8000/"); // Cambia la URL si es necesario
     await driver.manage().window().setRect({ width: 654, height: 656 });
-    await driver.findElement(By.id("num1")).sendKeys("2");
+    await driver.findElement(By.id("num1")).sendKeys("1");
     await driver.findElement(By.id("num2")).sendKeys("2");
     await driver.findElement(By.css("button:nth-child(1)")).click();
-
+  
     // Lógica de aserción
     const result = await driver.findElement(By.id("result")).getText();
-    assert.strictEqual(result, "4", "El resultado de 1 + 1 + 2 debería ser 4");
-
+    assert.strictEqual(result, "Result: 4", "El resultado de 1 + 1 + 2 debería ser 'Result: 4'");
+  
     // Captura de pantalla
     const filename = "specialcharacter";
     const encodedString = await driver.takeScreenshot();
