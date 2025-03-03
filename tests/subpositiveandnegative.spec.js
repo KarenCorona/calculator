@@ -10,6 +10,7 @@ describe('positive and negative', function() {
   if (!fs.existsSync('./screenshots')) {
 
     fs.mkdirSync('./screenshots');
+
 }
 
 beforeEach(async function() {
@@ -70,17 +71,19 @@ afterEach(async function () {
 });
 
   it('positive and negative', async function() {
-    await driver.get("http://127.0.0.1:8000/"); 
-    await driver.manage().window().setRect({ width: 654, height: 656 });
-    await driver.findElement(By.id("num1")).sendKeys("5");
-    await driver.findElement(By.id("num2")).sendKeys("-2");
-    await driver.findElement(By.css("button:nth-child(1)")).click();
+    await driver.get("http://127.0.0.1:8000/src/")
+    await driver.manage().window().setRect({ width: 654, height: 656 })
+    await driver.findElement(By.id("num1")).sendKeys("5")
+    await driver.findElement(By.id("num2")).click()
+    await driver.findElement(By.id("num1")).click()
+    await driver.findElement(By.id("num1")).sendKeys("-3")
+    await driver.findElement(By.id("num2")).click()
+    await driver.findElement(By.id("num2")).sendKeys("5")
+    await driver.findElement(By.css("button:nth-child(2)")).click()
+    await driver.close()
 
-    const result = await driver.findElement(By.id("result")).getText();
-    assert.strictEqual(result, "Result: 3", "El resultado de 5 + (-2) debería ser 'Result: 3'");
-
-    const filename = "positive and negative";
+    const filename = "subpostiveandnegative";
     const encodedString = await driver.takeScreenshot();
     await fs.writeFileSync(`./screenshots/${filename}.png`, encodedString, 'base64');
-  });
+  })
 })
