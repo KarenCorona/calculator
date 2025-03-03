@@ -71,7 +71,7 @@ afterEach(async function () {
 });
 
   it('special character', async function() {
-    await driver.get("http://127.0.0.1:5500/src/")
+    await driver.get("http://127.0.0.1:8000/src/")
     await driver.manage().window().setRect({ width: 654, height: 656 })
     await driver.findElement(By.id("num1")).sendKeys("?")
     await driver.findElement(By.id("num2")).click()
