@@ -1,22 +1,27 @@
 function calculate(){
     const num1 = document.getElementById("num1").value;
-    const num2 = document.getElementById("num2").value; //Probable error for ' instead of ""
+    const num2 = document.getElementById("num2").value;
 
-    let result;
-    result = Number(num1) + Number(num2);
-
-    document.getElementById("result").innerText = "Result: " + result;
+    fetch(`http://localhost:8080/api/calculator/add?a=${num1}&b=${num2}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("operator").innerText = "+";
+            document.getElementById("result").innerText = "Result: " + data;
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 function subtract(){
     const num1 = document.getElementById("num1").value;
     const num2 = document.getElementById("num2").value;
 
-    let result;
-    result = Number(num1) - Number(num2);
-
-    document.getElementById("operator").innerText = "-"; // Actualizar el operador
-    document.getElementById("result").innerText = "Result: " + result;
+    fetch(`http://localhost:8080/api/calculator/subtract?a=${num1}&b=${num2}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("operator").innerText = "-";
+            document.getElementById("result").innerText = "Result: " + data;
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 function resetFields(){
