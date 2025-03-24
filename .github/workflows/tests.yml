@@ -65,4 +65,4 @@ jobs:
     - name: Run API tests
       run: |
         npm install -g newman
-        newman run src/test/java/com/example/integration/Calculator.postman_collection.json
+        newman run src\main\java\com\example\integration\Calculator.postman_collection.json
