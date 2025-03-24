@@ -13,24 +13,28 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    
     - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Set up node 20
+        
+    - name: Set up Node.js 20
       uses: actions/setup-node@v4
       with:
         node-version: '20'
+        
     - name: Build with Maven
+      working-directory: backend/calc-backend
       run: |
-        cd backend/calc-backend
-        chmod +x mvnw  # Make wrapper executable
+        chmod +x mvnw
         ./mvnw clean package
+        
     - name: Start Spring Boot server
+      working-directory: backend/calc-backend
       run: |
-        cd backend/calc-backend
         java -jar target/*.jar &
         echo "Waiting for server to start..."
         attempt_counter=0
@@ -62,7 +66,26 @@ jobs:
             sleep 2
         done
         echo "Server ready for testing"
-    - name: Run API tests
+        
+    - name: Debug Postman collection location
+      run: |
+        echo "Current workspace: $GITHUB_WORKSPACE"
+        find $GITHUB_WORKSPACE -name "Calculator.postman_collection.json" || echo "Collection not found"
+        
+    - name: Run API tests with Newman
       run: |
         npm install -g newman
-        newman run src\main\java\com\example\integration\Calculator.postman_collection.json
+        # Try multiple possible locations for the collection file
+        if [ -f "$GITHUB_WORKSPACE/backend/calc-backend/src/test/resources/Calculator.postman_collection.json" ]; then
+          newman run "$GITHUB_WORKSPACE/backend/calc-backend/src/test/resources/Calculator.postman_collection.json"
+        elif [ -f "$GITHUB_WORKSPACE/src/main/java/com/example/integration/Calculator.postman_collection.json" ]; then
+          newman run "$GITHUB_WORKSPACE/src/main/java/com/example/integration/Calculator.postman_collection.json"
+        elif [ -f "$GITHUB_WORKSPACE/backend/calc-backend/src/main/java/com/example/integration/Calculator.postman_collection.json" ]; then
+          newman run "$GITHUB_WORKSPACE/backend/calc-backend/src/main/java/com/example/integration/Calculator.postman_collection.json"
+        else
+          echo "ERROR: Could not find Postman collection file in any of these locations:"
+          echo "1. backend/calc-backend/src/test/resources/"
+          echo "2. src/main/java/com/example/integration/"
+          echo "3. backend/calc-backend/src/main/java/com/example/integration/"
+          exit 1
+        fi
