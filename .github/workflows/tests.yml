@@ -35,18 +35,26 @@ jobs:
         echo "Waiting for server to start..."
         attempt_counter=0
         max_attempts=15
-        # Try multiple common endpoints
-        until $(curl --output /dev/null --silent --head --fail http://localhost:8080/actuator/health) || \
-              $(curl --output /dev/null --silent --head --fail http://localhost:8080/) || \
-              $(curl --output /dev/null --silent --head --fail http://localhost:8080/api/add) || \
-              $(curl -X POST --output /dev/null --silent --head --fail http://localhost:8080/add); do
+        
+        # First verify Java process is running
+        until ps aux | grep -q "[j]ava -jar target/.*\.jar"; do
+            if [ ${attempt_counter} -eq ${max_attempts} ];then
+              echo "Server process failed to start"
+              exit 1
+            fi
+            printf '.'
+            attempt_counter=$(($attempt_counter+1))
+            sleep 2
+        done
+        
+        echo "Java process running, checking endpoints..."
+        
+        # Check the actual endpoint with required parameters
+        until $(curl --output /dev/null --silent --fail "http://localhost:8080/api/calculator/add?a=1&b=2"); do
             if [ ${attempt_counter} -eq ${max_attempts} ];then
               echo "Max attempts reached"
-              echo "Trying to get error response from endpoints:"
-              curl -v http://localhost:8080/actuator/health || true
-              curl -v http://localhost:8080/ || true
-              curl -v http://localhost:8080/api/add || true
-              curl -v -X POST http://localhost:8080/add || true
+              echo "Trying to get response from endpoint:"
+              curl -v "http://localhost:8080/api/calculator/add?a=1&b=2" || true
               exit 1
             fi
             printf '.'
