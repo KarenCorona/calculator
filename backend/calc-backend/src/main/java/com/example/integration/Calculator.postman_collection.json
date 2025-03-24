@@ -10,33 +10,73 @@
 			"name": "add",
 			"request": {
 				"method": "GET",
-				"header": []
-			},
-			"response": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/calculator/add?a=5&b=3",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "calculator", "add"],
+					"query": [
+						{"key": "a", "value": "5"},
+						{"key": "b", "value": "3"}
+					]
+				}
+			}
 		},
 		{
 			"name": "subtract",
 			"request": {
 				"method": "GET",
-				"header": []
-			},
-			"response": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/calculator/subtract?a=5&b=3",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "calculator", "subtract"],
+					"query": [
+						{"key": "a", "value": "5"},
+						{"key": "b", "value": "3"}
+					]
+				}
+			}
 		},
 		{
 			"name": "divide",
 			"request": {
 				"method": "GET",
-				"header": []
-			},
-			"response": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/calculator/divide?a=10&b=2",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "calculator", "divide"],
+					"query": [
+						{"key": "a", "value": "10"},
+						{"key": "b", "value": "2"}
+					]
+				}
+			}
 		},
 		{
 			"name": "multiply",
 			"request": {
 				"method": "GET",
-				"header": []
-			},
-			"response": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/calculator/multiply?a=4&b=5",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "calculator", "multiply"],
+					"query": [
+						{"key": "a", "value": "4"},
+						{"key": "b", "value": "5"}
+					]
+				}
+			}
 		}
 	]
 }
