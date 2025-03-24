@@ -26,7 +26,7 @@ jobs:
         node-version: '20'
     - name: Build with Maven
       run: |
-          cd backend/calculator
+          cd backend/calc-backend
            mvnw clean spring-boot:run & 
            echo "waiting 5 seconds for the server to start"
            sleep 5 
