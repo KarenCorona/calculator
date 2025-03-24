@@ -59,4 +59,4 @@ function resetFields(){
     document.getElementById('num2').value = " ";
     document.getElementById('operator').value = " ";
     document.getElementById('result').innerText = " ";
-}
+}   
