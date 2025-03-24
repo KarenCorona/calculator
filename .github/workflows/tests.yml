@@ -31,18 +31,22 @@ jobs:
     - name: Start Spring Boot server
       run: |
         cd backend/calc-backend
-        java -jar target/*.jar & 
+        java -jar target/*.jar &
         echo "Waiting for server to start..."
         attempt_counter=0
         max_attempts=10
-        until $(curl --output /dev/null --silent --head --fail http://localhost:8080/add); do
+        # Try both /add and /actuator/health endpoints
+        until $(curl --output /dev/null --silent --head --fail http://localhost:8080/actuator/health) || $(curl --output /dev/null --silent --head --fail http://localhost:8080/add); do
             if [ ${attempt_counter} -eq ${max_attempts} ];then
               echo "Max attempts reached"
+              # Get more debug info before failing
+              netstat -tulpn
+              ps aux | grep java
               exit 1
             fi
             printf '.'
             attempt_counter=$(($attempt_counter+1))
-            sleep 5
+            sleep 3
         done
         echo "Server ready for testing"
     - name: Run API tests
