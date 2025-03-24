@@ -9,7 +9,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -20,30 +19,33 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Set up node 20 
+    - name: Set up node 20
       uses: actions/setup-node@v4
       with:
         node-version: '20'
     - name: Build with Maven
       run: |
-          cd backend/calc-backend
-           mvnw clean spring-boot:run & 
-           echo "waiting 5 seconds for the server to start"
-           sleep 5 
-           attempt_counter=0
-           max_attempts=5
-           until $(curl --output /dev/null --silent --head --fail http://localhost:8080/add); do
-              if [ ${attempt_counter} -eq ${max_attempts} ];then
-                echo "Max attempts reached"
-                exit 1
-              fi
-          
-              printf '.'
-              attempt_counter=$(($attempt_counter+1))
-              sleep 5
-           done
-           echo "sever ready for testing"
-           npm install -g newman
-           newman -v
-           newman run src/test/java/com/example/integration/Calculator.postman_collection.json
-           
+        cd backend/calc-backend
+        chmod +x mvnw  # Make wrapper executable
+        ./mvnw clean package
+    - name: Start Spring Boot server
+      run: |
+        cd backend/calc-backend
+        java -jar target/*.jar & 
+        echo "Waiting for server to start..."
+        attempt_counter=0
+        max_attempts=10
+        until $(curl --output /dev/null --silent --head --fail http://localhost:8080/add); do
+            if [ ${attempt_counter} -eq ${max_attempts} ];then
+              echo "Max attempts reached"
+              exit 1
+            fi
+            printf '.'
+            attempt_counter=$(($attempt_counter+1))
+            sleep 5
+        done
+        echo "Server ready for testing"
+    - name: Run API tests
+      run: |
+        npm install -g newman
+        newman run src/test/java/com/example/integration/Calculator.postman_collection.json
