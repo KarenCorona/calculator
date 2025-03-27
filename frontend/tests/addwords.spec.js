@@ -1,4 +1,4 @@
-const { Builder, By, Key, until } = require('selenium-webdriver');
+const { Builder, By, until } = require('selenium-webdriver');
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
@@ -42,13 +42,13 @@ describe('add words', function() {
     await driver.findElement(By.css("button:nth-child(1)")).click();
     
     // Verify error message
-    await driver.wait(until.elementTextContains(
+    await driver.wait(until.elementTextMatches(
       await driver.findElement(By.id("result")),
-      "Error",
+      /Error: Invalid number format/i,
       5000
     ));
     
     const result = await driver.findElement(By.id("result")).getText();
-    assert.match(result, /Error/i, "Should show error for non-numeric inputs");
+    assert.match(result, /Error: Invalid number format/i, "Should show error for non-numeric inputs");
   });
 });

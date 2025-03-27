@@ -39,14 +39,8 @@ describe('blank', function() {
     // Leave inputs blank and try to calculate
     await driver.findElement(By.css("button:nth-child(1)")).click();
     
-    // Verify error message
-    await driver.wait(until.elementTextContains(
-      await driver.findElement(By.id("result")),
-      "Please enter both numbers",
-      5000
-    ));
     
     const result = await driver.findElement(By.id("result")).getText();
-    assert.match(result, /Please enter both numbers/i, "Should prompt for both numbers");
+    assert.strictEqual(result, "Error: Please enter both numbers", "Should prompt for both numbers");
   });
 });

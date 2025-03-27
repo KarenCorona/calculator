@@ -41,12 +41,6 @@ describe('negative', function() {
     await driver.findElement(By.id("num2")).sendKeys("2");
     await driver.findElement(By.css("button:nth-child(1)")).click();
     
-    // Verify result
-    await driver.wait(until.elementTextContains(
-      await driver.findElement(By.id("result")),
-      "Result: -998",
-      5000
-    ));
     
     const result = await driver.findElement(By.id("result")).getText();
     assert.strictEqual(result, "Result: -998", "-1000 + 2 should equal -998");

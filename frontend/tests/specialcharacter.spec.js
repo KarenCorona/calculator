@@ -36,19 +36,19 @@ describe('special character', function() {
     await driver.get("http://localhost:8080");
     await driver.manage().window().setRect({ width: 1024, height: 768 });
     
-    // Enter numbers (original test expected 1 + 1 + 2 = 4, which needs clarification)
-    await driver.findElement(By.id("num1")).sendKeys("1");
+    // Enter special character
+    await driver.findElement(By.id("num1")).sendKeys("?");
     await driver.findElement(By.id("num2")).sendKeys("2");
     await driver.findElement(By.css("button:nth-child(1)")).click();
     
-    // Verify result
-    await driver.wait(until.elementTextContains(
+    // Verify error message
+    await driver.wait(until.elementTextMatches(
       await driver.findElement(By.id("result")),
-      "Result: 3",
+      /Error: Invalid number format/i,
       5000
     ));
     
     const result = await driver.findElement(By.id("result")).getText();
-    assert.strictEqual(result, "Result: 3", "1 + 2 should equal 3");
+    assert.match(result, /Error: Invalid number format/i, "Should show error for special characters");
   });
 });

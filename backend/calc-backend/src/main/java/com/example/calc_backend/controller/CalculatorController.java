@@ -18,7 +18,7 @@ public class CalculatorController {
             double num2 = parseNumber(b);
             return ResponseEntity.ok(num1 + num2);
         } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().body("Invalid number format");
+            return ResponseEntity.badRequest().body("Error: Invalid number format");
         }
     }
 
@@ -32,7 +32,7 @@ public class CalculatorController {
             double num2 = parseNumber(b);
             return ResponseEntity.ok(num1 - num2);
         } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().body("Invalid number format");
+            return ResponseEntity.badRequest().body("Error: Invalid number format");
         }
     }
 
@@ -46,7 +46,7 @@ public class CalculatorController {
             double num2 = parseNumber(b);
             return ResponseEntity.ok(num1 * num2);
         } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().body("Invalid number format");
+            return ResponseEntity.badRequest().body("Error: Invalid number format");
         }
     }
 
@@ -60,12 +60,12 @@ public class CalculatorController {
             double num2 = parseNumber(b);
             
             if (num2 == 0) {
-                return ResponseEntity.badRequest().body("Cannot divide by zero");
+                return ResponseEntity.badRequest().body("Error: Cannot divide by zero");
             }
             
             return ResponseEntity.ok(num1 / num2);
         } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().body("Invalid number format");
+            return ResponseEntity.badRequest().body("Error: Invalid number format");
         }
     }
 
@@ -73,6 +73,10 @@ public class CalculatorController {
         if (input == null || input.trim().isEmpty()) {
             throw new NumberFormatException("Empty input");
         }
-        return Double.parseDouble(input);
+        try {
+            return Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Invalid number: " + input);
+        }
     }
 }

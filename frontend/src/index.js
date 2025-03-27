@@ -1,6 +1,12 @@
+const API_BASE_URL = 'http://localhost:8080';
+
 async function performOperation(operation, symbol) {
     const num1Input = document.getElementById("num1").value.trim();
     const num2Input = document.getElementById("num2").value.trim();
+    
+    // Clear previous result
+    document.getElementById("result").innerText = "Calculating...";
+    document.getElementById("operator").innerText = symbol;
     
     // Input validation
     if (num1Input === "" || num2Input === "") {
@@ -8,11 +14,8 @@ async function performOperation(operation, symbol) {
         return;
     }
 
-    document.getElementById("operator").innerText = symbol;
-    document.getElementById("result").innerText = "Calculating...";
-    
     try {
-        const response = await fetch(`http://localhost:8080/api/calculator/${operation}?a=${num1Input}&b=${num2Input}`);
+        const response = await fetch(`${API_BASE_URL}/api/calculator/${operation}?a=${num1Input}&b=${num2Input}`);
         
         if (!response.ok) {
             const errorData = await response.text();
@@ -23,7 +26,9 @@ async function performOperation(operation, symbol) {
         document.getElementById("result").innerText = `Result: ${result}`;
     } catch (error) {
         console.error('Calculation error:', error);
-        document.getElementById("result").innerText = `Error: ${error.message}`;
+        // Extract clean error message from the response
+        const errorMsg = error.message.startsWith("Error:") ? error.message : `Error: ${error.message}`;
+        document.getElementById("result").innerText = errorMsg;
     }
 }
 

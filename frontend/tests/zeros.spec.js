@@ -41,13 +41,6 @@ describe('zeros', function() {
     await driver.findElement(By.id("num2")).sendKeys("0");
     await driver.findElement(By.css("button:nth-child(1)")).click();
     
-    // Verify result
-    await driver.wait(until.elementTextContains(
-      await driver.findElement(By.id("result")),
-      "Result: 0",
-      5000
-    ));
-    
     const result = await driver.findElement(By.id("result")).getText();
     assert.strictEqual(result, "Result: 0", "0 + 0 should equal 0");
   });
