@@ -1,19 +1,13 @@
 const API_BASE_URL = 'http://localhost:8080';
 
 async function performOperation(operation, symbol) {
-    const num1Input = document.getElementById("num1").value.trim();
-    const num2Input = document.getElementById("num2").value.trim();
+    const num1Input = document.getElementById("num1").value;
+    const num2Input = document.getElementById("num2").value;
     
-    // Clear previous result
-    document.getElementById("result").innerText = "Calculating...";
+    // Clear previous messages
     document.getElementById("operator").innerText = symbol;
+    document.getElementById("result").innerText = "Calculating...";
     
-    // Input validation
-    if (num1Input === "" || num2Input === "") {
-        document.getElementById("result").innerText = "Error: Please enter both numbers";
-        return;
-    }
-
     try {
         const response = await fetch(`${API_BASE_URL}/api/calculator/${operation}?a=${num1Input}&b=${num2Input}`);
         
@@ -25,10 +19,11 @@ async function performOperation(operation, symbol) {
         const result = await response.json();
         document.getElementById("result").innerText = `Result: ${result}`;
     } catch (error) {
-        console.error('Calculation error:', error);
-        // Extract clean error message from the response
-        const errorMsg = error.message.startsWith("Error:") ? error.message : `Error: ${error.message}`;
-        document.getElementById("result").innerText = errorMsg;
+        console.error('API Error:', error);
+        // Display clean error message to user
+        const errorMessage = error.message.startsWith("Error:") ? 
+            error.message : `Error: ${error.message}`;
+        document.getElementById("result").innerText = errorMessage;
     }
 }
 
@@ -54,3 +49,8 @@ function resetFields() {
     document.getElementById('operator').innerText = "+";
     document.getElementById('result').innerText = "Result:";
 }
+
+// Add event listeners for better error handling
+document.addEventListener('DOMContentLoaded', () => {
+    // Add any initialization code if needed
+});

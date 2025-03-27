@@ -9,52 +9,40 @@ import org.springframework.web.bind.annotation.*;
 public class CalculatorController {
 
     @GetMapping("/add")
-    public ResponseEntity<?> add(
-        @RequestParam String a, 
-        @RequestParam String b
-    ) {
+    public ResponseEntity<?> add(@RequestParam String a, @RequestParam String b) {
         try {
             double num1 = parseNumber(a);
             double num2 = parseNumber(b);
             return ResponseEntity.ok(num1 + num2);
         } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().body("Error: Invalid number format");
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
 
     @GetMapping("/subtract")
-    public ResponseEntity<?> subtract(
-        @RequestParam String a, 
-        @RequestParam String b
-    ) {
+    public ResponseEntity<?> subtract(@RequestParam String a, @RequestParam String b) {
         try {
             double num1 = parseNumber(a);
             double num2 = parseNumber(b);
             return ResponseEntity.ok(num1 - num2);
         } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().body("Error: Invalid number format");
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
 
     @GetMapping("/multiply")
-    public ResponseEntity<?> multiply(
-        @RequestParam String a, 
-        @RequestParam String b
-    ) {
+    public ResponseEntity<?> multiply(@RequestParam String a, @RequestParam String b) {
         try {
             double num1 = parseNumber(a);
             double num2 = parseNumber(b);
             return ResponseEntity.ok(num1 * num2);
         } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().body("Error: Invalid number format");
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
 
     @GetMapping("/divide")
-    public ResponseEntity<?> divide(
-        @RequestParam String a, 
-        @RequestParam String b
-    ) {
+    public ResponseEntity<?> divide(@RequestParam String a, @RequestParam String b) {
         try {
             double num1 = parseNumber(a);
             double num2 = parseNumber(b);
@@ -65,13 +53,13 @@ public class CalculatorController {
             
             return ResponseEntity.ok(num1 / num2);
         } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().body("Error: Invalid number format");
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
 
     private double parseNumber(String input) throws NumberFormatException {
         if (input == null || input.trim().isEmpty()) {
-            throw new NumberFormatException("Empty input");
+            throw new NumberFormatException("Please enter both numbers");
         }
         try {
             return Double.parseDouble(input);
