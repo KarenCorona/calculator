@@ -36,34 +36,19 @@ describe('zeros', function() {
     await driver.get("http://localhost:8080");
     await driver.manage().window().setRect({ width: 1024, height: 768 });
     
-    // Clear and enter zero values
-    const num1 = await driver.findElement(By.id("num1"));
-    await num1.clear();
-    await num1.sendKeys("0");
+    // Enter zeros
+    await driver.findElement(By.id("num1")).sendKeys("0");
+    await driver.findElement(By.id("num2")).sendKeys("0");
+    await driver.findElement(By.css("button:nth-child(1)")).click();
     
-    const num2 = await driver.findElement(By.id("num2"));
-    await num2.clear();
-    await num2.sendKeys("0");
-    
-    // Click the addition button
-    const addButton = await driver.findElement(By.xpath("//button[contains(text(),'Addition')]"));
-    await addButton.click();
-    
-    // Wait for result to update
+    // Verify result
     await driver.wait(until.elementTextContains(
-      await driver.findElement(By.id("result")), 
+      await driver.findElement(By.id("result")),
       "Result: 0",
       5000
-    );
+    ));
     
-    // Verify the result
-    const resultElement = await driver.findElement(By.id("result"));
-    const resultText = await resultElement.getText();
-    
-    assert.strictEqual(
-      resultText,
-      "Result: 0",
-      "0 + 0 should equal 0"
-    );
+    const result = await driver.findElement(By.id("result")).getText();
+    assert.strictEqual(result, "Result: 0", "0 + 0 should equal 0");
   });
 });
