@@ -1,16 +1,18 @@
-
 package com.example.calc_backend.controller;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/calculator")
 @CrossOrigin(origins = "*")
-
 public class CalculatorController {
 
     @GetMapping("/add")
-    public ResponseEntity<?> add(@RequestParam String a, @RequestParam String b) {
+    public ResponseEntity<?> add(
+        @RequestParam String a, 
+        @RequestParam String b
+    ) {
         try {
             double num1 = Double.parseDouble(a);
             double num2 = Double.parseDouble(b);
@@ -21,20 +23,49 @@ public class CalculatorController {
     }
 
     @GetMapping("/subtract")
-    public double subtract(@RequestParam double a, @RequestParam double b) {
-        return a - b;
+    public ResponseEntity<?> subtract(
+        @RequestParam String a, 
+        @RequestParam String b
+    ) {
+        try {
+            double num1 = Double.parseDouble(a);
+            double num2 = Double.parseDouble(b);
+            return ResponseEntity.ok(num1 - num2);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Invalid number format");
+        }
     }
 
     @GetMapping("/multiply")
-    public double multiply(@RequestParam double a, @RequestParam double b) {
-        return a * b;
+    public ResponseEntity<?> multiply(
+        @RequestParam String a, 
+        @RequestParam String b
+    ) {
+        try {
+            double num1 = Double.parseDouble(a);
+            double num2 = Double.parseDouble(b);
+            return ResponseEntity.ok(num1 * num2);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Invalid number format");
+        }
     }
 
     @GetMapping("/divide")
-    public double divide(@RequestParam double a, @RequestParam double b) {
-        if (b == 0) {
-            throw new IllegalArgumentException("Divisor cannot be zero");
+    public ResponseEntity<?> divide(
+        @RequestParam String a, 
+        @RequestParam String b
+    ) {
+        try {
+            double num1 = Double.parseDouble(a);
+            double num2 = Double.parseDouble(b);
+            
+            if (num2 == 0) {
+                return ResponseEntity.badRequest().body("Cannot divide by zero");
+            }
+            
+            return ResponseEntity.ok(num1 / num2);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Invalid number format");
         }
-        return a / b;
     }
 }
