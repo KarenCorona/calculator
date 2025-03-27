@@ -10,8 +10,14 @@ import org.springframework.web.bind.annotation.*;
 public class CalculatorController {
 
     @GetMapping("/add")
-    public ResponseEntity<Double> add(@RequestParam(value = "a", defaultValue = "0") double a, @RequestParam(value = "b", defaultValue = "0") double b) {
-    return ResponseEntity.ok(a + b);
+    public ResponseEntity<?> add(@RequestParam String a, @RequestParam String b) {
+        try {
+            double num1 = Double.parseDouble(a);
+            double num2 = Double.parseDouble(b);
+            return ResponseEntity.ok(num1 + num2);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Invalid number format");
+        }
     }
 
     @GetMapping("/subtract")
