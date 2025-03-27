@@ -14,8 +14,8 @@ public class CalculatorController {
         @RequestParam String b
     ) {
         try {
-            double num1 = Double.parseDouble(a);
-            double num2 = Double.parseDouble(b);
+            double num1 = parseNumber(a);
+            double num2 = parseNumber(b);
             return ResponseEntity.ok(num1 + num2);
         } catch (NumberFormatException e) {
             return ResponseEntity.badRequest().body("Invalid number format");
@@ -28,8 +28,8 @@ public class CalculatorController {
         @RequestParam String b
     ) {
         try {
-            double num1 = Double.parseDouble(a);
-            double num2 = Double.parseDouble(b);
+            double num1 = parseNumber(a);
+            double num2 = parseNumber(b);
             return ResponseEntity.ok(num1 - num2);
         } catch (NumberFormatException e) {
             return ResponseEntity.badRequest().body("Invalid number format");
@@ -42,8 +42,8 @@ public class CalculatorController {
         @RequestParam String b
     ) {
         try {
-            double num1 = Double.parseDouble(a);
-            double num2 = Double.parseDouble(b);
+            double num1 = parseNumber(a);
+            double num2 = parseNumber(b);
             return ResponseEntity.ok(num1 * num2);
         } catch (NumberFormatException e) {
             return ResponseEntity.badRequest().body("Invalid number format");
@@ -56,8 +56,8 @@ public class CalculatorController {
         @RequestParam String b
     ) {
         try {
-            double num1 = Double.parseDouble(a);
-            double num2 = Double.parseDouble(b);
+            double num1 = parseNumber(a);
+            double num2 = parseNumber(b);
             
             if (num2 == 0) {
                 return ResponseEntity.badRequest().body("Cannot divide by zero");
@@ -67,5 +67,12 @@ public class CalculatorController {
         } catch (NumberFormatException e) {
             return ResponseEntity.badRequest().body("Invalid number format");
         }
+    }
+
+    private double parseNumber(String input) throws NumberFormatException {
+        if (input == null || input.trim().isEmpty()) {
+            throw new NumberFormatException("Empty input");
+        }
+        return Double.parseDouble(input);
     }
 }
