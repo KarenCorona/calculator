@@ -1,5 +1,6 @@
 
 package com.example.calc_backend.controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -9,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 public class CalculatorController {
 
     @GetMapping("/add")
-    public double add(@RequestParam double a, @RequestParam double b) {
-        return a + b;
+    public ResponseEntity<Double> add(@RequestParam(value = "a", defaultValue = "0") double a, @RequestParam(value = "b", defaultValue = "0") double b) {
+    return ResponseEntity.ok(a + b);
     }
 
     @GetMapping("/subtract")
